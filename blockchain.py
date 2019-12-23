@@ -4,6 +4,7 @@ import hashlib
 import json
 from textwrtap import dedent
 from time import time
+from uuid import uuid4
 from flask import Flask
 
 class Blockchain(object):
@@ -80,3 +81,8 @@ class Blockchain(object):
         guess = f'{last_proof}{proof}'.encode()  
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == "0000"
+#We are going to create a blockchain object
+app=Flask(__name__)
+
+#generate a global indentifier for this node.
+node_identifier=str(uuid4().replace("-",""))
