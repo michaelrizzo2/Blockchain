@@ -86,3 +86,23 @@ app=Flask(__name__)
 
 #generate a global indentifier for this node.
 node_identifier=str(uuid4().replace("-",""))
+
+#We are atsrting the blockchain
+blockchain=Blockchain()
+
+#We are setting the mine route
+@app.route('/mine'methods=["GET"])
+def mine()
+    return "We will mine a new block"
+
+@app.route('/transactions/new',methods=["POST"])
+def new_transaction():
+    return "We will add a new transaction"
+
+@app.route('/chain',methods=["GET"])
+def full_chain():
+    response ={'chain': blockchain.chain, 'length': len(blockchain.chain)}
+    return jsonify(response), 200
+
+if __name__ =='__main__':
+    app.run(host="10.2.3.4",port=5000)
