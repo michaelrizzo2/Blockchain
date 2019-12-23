@@ -5,7 +5,7 @@ import json
 from textwrtap import dedent
 from time import time
 from uuid import uuid4
-from flask import Flask
+from flask import Flask,jsonify,request
 
 class Blockchain(object):
     def __init__(self):
@@ -77,7 +77,6 @@ class Blockchain(object):
         :param proof: <int> Current Proof
         :return: <bool> True if correct, False if not.
         """
-
         guess = f'{last_proof}{proof}'.encode()  
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == "0000"
@@ -91,8 +90,8 @@ node_identifier=str(uuid4().replace("-",""))
 blockchain=Blockchain()
 
 #We are setting the mine route
-@app.route('/mine'methods=["GET"])
-def mine()
+@app.route('/mine',methods=["GET"])
+def mine():
     return "We will mine a new block"
 
 @app.route('/transactions/new',methods=["POST"])
