@@ -2,7 +2,7 @@
 
 import hashlib
 import json
-from textwrtap import dedent
+from textwrap import dedent
 from time import time
 from uuid import uuid4
 from flask import Flask,jsonify,request
@@ -51,7 +51,7 @@ class Blockchain(object):
 # We must make sure that the Dictionary is Ordered, or we'll have inconsistent hashes
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
-        
+
     @property
     def last_block(self):
         #This will return the last block in the chain
@@ -65,7 +65,7 @@ class Blockchain(object):
         :param last_proof: <int>
         :return: <int>
         """
-        proof = 0                      
+        proof = 0
         while self.valid_proof(last_proof, proof) is False: 
             proof += 1
         return proof
@@ -84,7 +84,7 @@ class Blockchain(object):
 app=Flask(__name__)
 
 #generate a global indentifier for this node.
-node_identifier=str(uuid4().replace("-",""))
+node_identifier=str(uuid4()).replace("-","")
 
 #We are atsrting the blockchain
 blockchain=Blockchain()
@@ -92,7 +92,20 @@ blockchain=Blockchain()
 #We are setting the mine route
 @app.route('/mine',methods=["GET"])
 def mine():
-    return "We will mine a new block"
+    #We need to run the proof of work algorithm  
+    last_block=blockchain.last_block
+    last_proof=last_block['proof']
+    proof=blockchain.proof_of_work(last_proof)
+    #Now we need to give a reward for finding the proof
+    #The sender is 0 to show that the coin has been mined to a new node.
+    blockchain.new_transaction(sender="0",recipient=node_identifier,amount=1)
+    #Now we forge the new block by adding it to the chain
+    previous_hash=blockchain.hash(last_block)
+    block=blockchain.new_block(proof,previous_hash)
+    response={"Message":"New block formed","index":block["index"],"transactions":block["transactions"],"proof":block["proof"],"previous_hash":block["previous_hash"]}
+    return jsonify(response),201
+
+
 
 @app.route('/transactions/new',methods=["POST"])
 def new_transaction():
@@ -112,4 +125,4 @@ def full_chain():
     return jsonify(response), 200
 
 if __name__ =='__main__':
-    app.run(host="10.2.3.4",port=5000)
+    app.run(host="0.0.0.0",port=5000)
