@@ -2,7 +2,6 @@
 
 import hashlib
 import json
-from textwrap import dedent
 from time import time
 from uuid import uuid4
 from flask import Flask,jsonify,request
@@ -13,7 +12,7 @@ class Blockchain(object):
         self.current_transactions=[]
         
         #This will create the genesis transaction
-        self.new_block(previous_hash=1,proof=100)
+        self.new_block(previous_hash="1",proof=100)
 
     def new_block(self,proof,previous_hash=None):
         """Create a new Block in the Blockchain
