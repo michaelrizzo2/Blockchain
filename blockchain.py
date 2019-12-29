@@ -93,7 +93,6 @@ blockchain=Blockchain()
 def mine():
     #We need to run the proof of work algorithm  
     last_block=blockchain.last_block
-    last_proof=last_block['proof']
     proof=blockchain.proof_of_work(last_proof)
     #Now we need to give a reward for finding the proof
     #The sender is 0 to show that the coin has been mined to a new node.
@@ -102,7 +101,7 @@ def mine():
     previous_hash=blockchain.hash(last_block)
     block=blockchain.new_block(proof,previous_hash)
     response={"Message":"New block formed","index":block["index"],"transactions":block["transactions"],"proof":block["proof"],"previous_hash":block["previous_hash"]}
-    return jsonify(response),201
+    return jsonify(response),200
 
 
 
