@@ -142,11 +142,12 @@ def mine():
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
+    print("Running new transactions")
     values = request.get_json()
-    print(f'The values are {values}')
-
     # Check that the required fields are in the POST'ed data
     required = ['sender', 'recipient', 'amount']
+    print(f'values is {values} and the required is {required}')
+    print(f'{request.get_json}')
     if not all(k in values for k in required):
         return 'Missing values', 400
 
