@@ -142,6 +142,7 @@ def mine():
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
     values = request.get_json()
+    print(f'The values are {values}')
 
     # Check that the required fields are in the POST'ed data
     required = ['sender', 'recipient', 'amount']
