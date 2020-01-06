@@ -115,9 +115,7 @@ blockchain = Blockchain()
 def mine():
     # We run the proof of work algorithm to get the next proof...
     last_block = blockchain.last_block
-    print(f'the last block is {last_block}')
     last_proof=last_block['proof']
-    print(f'the last proof is {last_proof} and the type is {type(last_proof)}')
     proof = blockchain.proof_of_work(last_proof)
 
     # We must receive a reward for finding the proof.
@@ -144,12 +142,9 @@ def mine():
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
-    print("Running new transactions")
     values = request.get_json()
     # Check that the required fields are in the POST'ed data
     required = ['sender', 'recipient', 'amount']
-    print(f'values is {values} and the required is {required}')
-    print(f'{request}')
     if not all(k in values for k in required):
         return 'Missing values', 400
 
