@@ -1,1 +1,16 @@
 Results for the mine method
+GET   {
+    "index": 2,
+    "message": "New Block Forged",
+    "previous_hash": "fae8044bebb87b0afd41594ef53714449fc8429650ee171ef9013c7cb48d9c41",
+    "proof": 224,
+    "transactions": [
+        {
+            "amount": 1,
+            "recipient": "ae0806d31bfd47b5a032aca9af1f847c",
+            "sender": "0"
+        }
+    ]
+}
+
+Results for the new transactions method
