@@ -142,7 +142,7 @@ def mine():
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
-    values = request.get_json()
+    values = request.get_json(force=True)
     # Check that the required fields are in the POST'ed data
     required = ['sender', 'recipient', 'amount']
     if not all(k in values for k in required):
@@ -164,4 +164,10 @@ def full_chain():
     return jsonify(response), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')
+    args = parser.parse_args()
+    port = args.port
+
+    app.run(host='0.0.0.0', port=port)
