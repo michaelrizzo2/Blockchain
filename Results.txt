@@ -24,3 +24,6 @@ Results for the new transactions method
 <title>400 Bad Request</title>
 <h1>Bad Request</h1>
 <p>The browser (or proxy) sent a request that this server could not understand.</p>
+
+New Result
+{"message":"Transaction will be added to Block 2"}
