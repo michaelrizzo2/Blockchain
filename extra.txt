@@ -1,0 +1,32 @@
+class Blockchain:
+    #difficulty of the prrof of work algorithm
+    difficulty=2
+
+    #initializing the blockchain
+    def __init__(self):
+        self.unconfirmed_transactions=[]
+        self.chain=[]
+
+    #this will create the genesis block for the beginning of the chain.
+    def create_genesis_block(self):
+        genesis_block=Block(0,[],0,"0")
+        genesis_block.hash=genesis_block.compute_hash()
+        self.chain.append(genesis_block)
+
+    @property
+    #this will get the last block from the chain to compare against
+    def last_block(self):
+        return self.chain[-1]
+
+    #this will add the block to the chain after verification
+    def add_block(self,block,proof):
+        # Verification includes: Checking if the proof is valid.The previous_hash referred in the block and the hash of latest block in the chain match.
+        previous_hash=self.last_block.hash
+
+        if previous_hash!=block.previous_hash:
+            return False
+        if not blockchain.is_valid_proof(block,proof):
+            return False
+        block.hash=proof
+        self.chain.append(block)
+        return True
