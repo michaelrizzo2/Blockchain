@@ -1,5 +1,5 @@
-class Blockchain:
-    def __init__(self,index,transactions,timestamp):
+class Block:
+    def __init__(self,index,transactions,timestamp,nonce,previous_hash):
         #This will be a constructor for the block class
     """
     :param index: Unique ID of the block.
