@@ -12,9 +12,9 @@ class Block:
         self.previous_hash = previous_hash
         self.nonce = nonce
     #this will compute the hash for every entry in the blockchain.
-        def compute_hash(self):
-            block_string=json.dumps(self.__dict__,sort_keys=True)
-            return sha256(block_string.encode()).hexdigest()
+    def compute_hash(self):
+        block_string=json.dumps(self.__dict__,sort_keys=True)
+        return sha256(block_string.encode()).hexdigest()
 
  #this next class will be for the actual blockchain
 class Blockchain:
@@ -58,3 +58,53 @@ class Blockchain:
         block.hash = proof
         self.chain.append(block)
         return True 
+    @staticmethod
+    def proof_of_work(block):
+        """
+        Function that tries different values of nonce to get a hash
+        that satisfies our difficulty criteria.
+        """
+        block.nonce = 0
+
+        computed_hash=block.compute_hash()
+
+        while not computed_hash.startswith('0'*Blockchain.difficulty):
+            block.nonce += 1
+            computed_hash = block.compute_hash()
+        return computed_hash
+    def add_new_transaction(self, transaction):
+        self.unconfirmed_transactions.append(transaction)
+    
+    @classmethod
+    def is_valid_proof(cls,block,block_hash):
+        #this will check if the blockhash is valid and satisfies all of the requirements.
+        return (block_hash.startswith("0"*Blockchain.difficulty) and block_hash==block.compute_hash())
+
+    @classmethod
+    #This will check the validity of the chain.
+    def check_chain_validity(cls,chain):
+        result=True
+        previous_hash="0"
+        for block in chain:
+            block_hash=block.hash
+            #remove the hash field to compute the hash again.
+            delattr(block, 'hash')
+
+            if not cls.is_valid_proof(block,block_hash) or previous_hash!=block.hash:
+                result=False
+                break
+            block.hash,previous_hash=block_hash,block_hash
+        return True
+
+    def mine(self):
+        #This will add all of the transactions to the blockchain
+        if not self.unconfirmed_transactions:
+            return False
+        
+        last_block=self.last_block
+
+        new_block=Block(index=last_block.index+1,transactions=self.unconfirmed_transactions,timestamp=time.time(),previous_hash=last_block.hash)
+        proof=self.proof_of_work(new_block)
+        self.add_block(new_block,proof)
+        self.unconfirmed_transactions=[],
+        return True
