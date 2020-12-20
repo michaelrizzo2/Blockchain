@@ -94,7 +94,7 @@ class Blockchain:
                 result=False
                 break
             block.hash,previous_hash=block_hash,block_hash
-        return True
+        return result 
 
     def mine(self):
         #This will add all of the transactions to the blockchain
